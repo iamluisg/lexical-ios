@@ -29,6 +29,9 @@
 		9C10D8562E5503EA0039F122 /* CustomMentionsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C10D8552E5503EA0039F122 /* CustomMentionsPlugin.swift */; };
 		9C10D8582E55048D0039F122 /* CustomMentionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C10D8572E55048D0039F122 /* CustomMentionNode.swift */; };
 		9C10D85A2E5504D80039F122 /* CustomTabNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C10D8592E5504D80039F122 /* CustomTabNode.swift */; };
+		9C10D85C2E5506D80039F122 /* SwiftUIExpandableContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C10D85B2E5506D80039F122 /* SwiftUIExpandableContentView.swift */; };
+		9C10D85E2E5506FF0039F122 /* ExpandableSwiftUILexicalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C10D85D2E5506FF0039F122 /* ExpandableSwiftUILexicalView.swift */; };
+		9C10D8602E5507370039F122 /* SwiftUILexicalViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C10D85F2E5507370039F122 /* SwiftUILexicalViewWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +51,9 @@
 		9C10D8552E5503EA0039F122 /* CustomMentionsPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMentionsPlugin.swift; sourceTree = "<group>"; };
 		9C10D8572E55048D0039F122 /* CustomMentionNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMentionNode.swift; sourceTree = "<group>"; };
 		9C10D8592E5504D80039F122 /* CustomTabNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabNode.swift; sourceTree = "<group>"; };
+		9C10D85B2E5506D80039F122 /* SwiftUIExpandableContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIExpandableContentView.swift; sourceTree = "<group>"; };
+		9C10D85D2E5506FF0039F122 /* ExpandableSwiftUILexicalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableSwiftUILexicalView.swift; sourceTree = "<group>"; };
+		9C10D85F2E5507370039F122 /* SwiftUILexicalViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUILexicalViewWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +134,9 @@
 				9C10D8552E5503EA0039F122 /* CustomMentionsPlugin.swift */,
 				9C10D8572E55048D0039F122 /* CustomMentionNode.swift */,
 				9C10D8592E5504D80039F122 /* CustomTabNode.swift */,
+				9C10D85B2E5506D80039F122 /* SwiftUIExpandableContentView.swift */,
+				9C10D85D2E5506FF0039F122 /* ExpandableSwiftUILexicalView.swift */,
+				9C10D85F2E5507370039F122 /* SwiftUILexicalViewWrapper.swift */,
 			);
 			path = Customizations;
 			sourceTree = "<group>";
@@ -218,14 +227,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C10D8582E55048D0039F122 /* CustomMentionNode.swift in Sources */,
+				9C10D85E2E5506FF0039F122 /* ExpandableSwiftUILexicalView.swift in Sources */,
 				0656CF7D29D1E438009CA08F /* ViewController.swift in Sources */,
 				0656CF7929D1E438009CA08F /* AppDelegate.swift in Sources */,
+				9C10D8602E5507370039F122 /* SwiftUILexicalViewWrapper.swift in Sources */,
 				0656CF9029D1ED8F009CA08F /* ToolbarPlugin.swift in Sources */,
 				069E59DD2A1F726D00CA4296 /* ExportOutputViewController.swift in Sources */,
 				9C10D8562E5503EA0039F122 /* CustomMentionsPlugin.swift in Sources */,
 				9C10D85A2E5504D80039F122 /* CustomTabNode.swift in Sources */,
 				9C10D8512E55027E0039F122 /* LexicalTestData.swift in Sources */,
 				9C10D8542E55038F0039F122 /* ExpandableLexicalView.swift in Sources */,
+				9C10D85C2E5506D80039F122 /* SwiftUIExpandableContentView.swift in Sources */,
 				06CB47B429DE0139005AC7BD /* NodeHierarchyViewPlugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

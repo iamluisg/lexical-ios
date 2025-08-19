@@ -11,6 +11,7 @@ import LexicalInlineImagePlugin
 import LexicalLinkPlugin
 import LexicalListPlugin
 import UIKit
+import SwiftUI
 
 class ViewController: UIViewController, UIToolbarDelegate {
 
@@ -24,7 +25,8 @@ class ViewController: UIViewController, UIToolbarDelegate {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
 
-      makeUIKitVersion()
+//      makeUIKitVersion()
+      makeSwiftUIView()
   }
 
   override func viewDidLayoutSubviews() {
@@ -110,6 +112,7 @@ class ViewController: UIViewController, UIToolbarDelegate {
   }
 }
 
+// MARK: - Custom UIKit Version
 extension ViewController {
     func makeUIKitVersion() {
       let editorHistoryPlugin = EditorHistoryPlugin()
@@ -168,7 +171,28 @@ extension ViewController {
             expandableLexicalView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
+}
+
+// MARK: - Custom SwiftUI Version
+extension ViewController {
+    func makeSwiftUIView() {
+        let jsonString = unescapeServerString(LexicalTestData.communityLexicalText)
+        
+        let swiftUIContentView = SwiftUIContentView(
+            initialText: "",
+            initialJSON: jsonString
+        )
+        
+        let hostingVC = UIHostingController(rootView: swiftUIContentView)
+        self.addChild(hostingVC)
+        self.view.addSubview(hostingVC.view)
+        hostingVC.view.frame = self.view.frame
+        hostingVC.didMove(toParent: self)
+    }
+}
+
+// MARK: - Custom helper funcs
+extension ViewController {
     private func unescapeServerString(_ input: String) -> String {
         var unescaped = input
 
