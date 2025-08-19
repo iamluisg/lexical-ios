@@ -15,6 +15,7 @@ import UIKit
 class ViewController: UIViewController, UIToolbarDelegate {
 
   var lexicalView: LexicalView?
+    var expandableLexicalView: ExpandableLexicalView?
   weak var toolbar: UIToolbar?
   weak var hierarchyView: UIView?
   private let editorStatePersistenceKey = "editorState"
@@ -23,42 +24,7 @@ class ViewController: UIViewController, UIToolbarDelegate {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
 
-    let editorHistoryPlugin = EditorHistoryPlugin()
-    let toolbarPlugin = ToolbarPlugin(viewControllerForPresentation: self, historyPlugin: editorHistoryPlugin)
-    let toolbar = toolbarPlugin.toolbar
-    toolbar.delegate = self
-
-    let hierarchyPlugin = NodeHierarchyViewPlugin()
-    let hierarchyView = hierarchyPlugin.hierarchyView
-
-    let listPlugin = ListPlugin()
-    let imagePlugin = InlineImagePlugin()
-
-    let linkPlugin = LinkPlugin()
-
-    let theme = Theme()
-    theme.indentSize = 40.0
-    theme.link = [
-      .foregroundColor: UIColor.systemBlue
-    ]
-
-    let editorConfig = EditorConfig(theme: theme, plugins: [toolbarPlugin, listPlugin, hierarchyPlugin, imagePlugin, linkPlugin, editorHistoryPlugin])
-    let lexicalView = LexicalView(editorConfig: editorConfig, featureFlags: FeatureFlags())
-
-    linkPlugin.lexicalView = lexicalView
-
-    self.lexicalView = lexicalView
-    self.toolbar = toolbar
-    self.hierarchyView = hierarchyView
-
-    self.restoreEditorState()
-
-    view.addSubview(lexicalView)
-    view.addSubview(toolbar)
-    view.addSubview(hierarchyView)
-
-    navigationItem.title = "Lexical"
-    setUpExportMenu()
+      makeUIKitVersion()
   }
 
   override func viewDidLayoutSubviews() {
@@ -142,4 +108,100 @@ class ViewController: UIViewController, UIToolbarDelegate {
   func position(for bar: UIBarPositioning) -> UIBarPosition {
     return .top
   }
+}
+
+extension ViewController {
+    func makeUIKitVersion() {
+      let editorHistoryPlugin = EditorHistoryPlugin()
+      let toolbarPlugin = ToolbarPlugin(viewControllerForPresentation: self, historyPlugin: editorHistoryPlugin)
+      let toolbar = toolbarPlugin.toolbar
+      toolbar.delegate = self
+
+      let hierarchyPlugin = NodeHierarchyViewPlugin()
+      let hierarchyView = hierarchyPlugin.hierarchyView
+
+      let listPlugin = ListPlugin()
+      let imagePlugin = InlineImagePlugin()
+
+      let linkPlugin = LinkPlugin()
+
+      let theme = Theme()
+      theme.indentSize = 16.0
+      theme.link = [
+        .foregroundColor: UIColor.systemBlue
+      ]
+
+        let editorConfig = EditorConfig(theme: theme, plugins: [toolbarPlugin, listPlugin, hierarchyPlugin, imagePlugin, linkPlugin, editorHistoryPlugin, CustomMentionsPlugin()])
+      let lexicalView = LexicalView(editorConfig: editorConfig, featureFlags: FeatureFlags())
+
+      // Create expandable wrapper with max 8 lines
+      let expandableLexicalView = ExpandableLexicalView(lexicalView: lexicalView, maxLines: 8)
+
+      linkPlugin.lexicalView = lexicalView
+
+      self.lexicalView = lexicalView
+      self.expandableLexicalView = expandableLexicalView
+      self.toolbar = toolbar
+      self.hierarchyView = hierarchyView
+
+      // Load the custom JSON data instead of restoring from UserDefaults
+      loadCustomEditorState()
+
+      view.addSubview(expandableLexicalView)
+//      view.addSubview(toolbar)
+//      view.addSubview(hierarchyView)
+      
+      // Setup Auto Layout constraints instead of frames
+      setupAutoLayoutConstraints()
+
+      navigationItem.title = "Lexical"
+      setUpExportMenu()
+    }
+    
+    func setupAutoLayoutConstraints() {
+        guard let expandableLexicalView = expandableLexicalView else { return }
+        
+        NSLayoutConstraint.activate([
+            expandableLexicalView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            expandableLexicalView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            expandableLexicalView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            expandableLexicalView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func unescapeServerString(_ input: String) -> String {
+        var unescaped = input
+
+        // 1. Remove the outer literal quotes if they exist (e.g., """ "..." """ -> "...")
+        if unescaped.hasPrefix("\"") && unescaped.hasSuffix("\"") && unescaped.count >= 2 {
+            unescaped = String(unescaped.dropFirst().dropLast())
+        }
+        
+        // 2. Unescape the JSON-specific escapes (e.g., \" to ", \\ to \)
+        unescaped = unescaped.replacingOccurrences(of: "\\\"", with: "\"")
+        unescaped = unescaped.replacingOccurrences(of: "\\\\", with: "\\")
+        
+        return unescaped
+    }
+    
+    func loadCustomEditorState() {
+        guard let editor = lexicalView?.editor else {
+            return
+        }
+        
+        // Get the same JSON data used in SwiftUI version
+        let jsonString = unescapeServerString(LexicalTestData.communityLexicalText)
+        
+        // Create EditorState from JSON and set it
+        do {
+            let newEditorState = try EditorState.fromJSON(json: jsonString, editor: editor)
+            try editor.setEditorState(newEditorState)
+            
+            // Update expandable view content after loading
+            expandableLexicalView?.updateContent()
+        } catch {
+            print("Error loading custom editor state: \(error)")
+            // Fall back to empty state if JSON parsing fails
+        }
+    }
 }
