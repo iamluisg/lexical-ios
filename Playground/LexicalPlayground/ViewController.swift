@@ -25,8 +25,8 @@ class ViewController: UIViewController, UIToolbarDelegate {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
 
-//      makeUIKitVersion()
-      makeSwiftUIView()
+      makeUIKitVersion()
+//      makeSwiftUIView()
   }
 
   override func viewDidLayoutSubviews() {
@@ -125,6 +125,7 @@ extension ViewController {
 
       let listPlugin = ListPlugin()
       let imagePlugin = InlineImagePlugin()
+        
 
       let linkPlugin = LinkPlugin()
 
@@ -214,7 +215,7 @@ extension ViewController {
         }
         
         // Get the same JSON data used in SwiftUI version
-        let jsonString = unescapeServerString(LexicalTestData.communityLexicalText)
+        let jsonString = unescapeServerString(LexicalTestData.textWithNewLines)
         
         // Create EditorState from JSON and set it
         do {
