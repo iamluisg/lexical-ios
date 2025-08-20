@@ -89,6 +89,7 @@ let defaultDeserializationMapping: DeserializationMapping = [
   NodeType.heading: { decoder in try HeadingNode(from: decoder) },
   NodeType.paragraph: { decoder in try ParagraphNode(from: decoder) },
   NodeType.quote: { decoder in try QuoteNode(from: decoder) },
+  NodeType.linebreak: { decoder in try LineBreakNode(from: decoder) },
 ]
 
 func makeDeserializationMap() -> DeserializationMapping {
